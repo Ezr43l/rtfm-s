@@ -1,0 +1,174 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Test resumable release artifact gate
+        shell: bash
+        run: |
+          bash .github/scripts/test-release-artifact.sh
+          bash .github/scripts/test-alpine-copyleft-manifest.sh
+          bash tests/test-data-uid-migration.sh
+          python tests/test_public_export.py
+
+      - name: Validate version and public distribution contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(tr -d ' \r\n' < VERSION)"
+          grep -F "RTFM_BUILD_VERSION=$version" .env.example
+          grep -F "rtfm:$version" compose.yaml
+          grep -F "rtfm-s:$version" unraid/my-RTFM.xml
+          grep -F "\"version\": \"$version\"" web/package.json
+          grep -F "RTFM_LICENSE_SPDX=Apache-2.0" .env.example
+          test -f LICENSE
+          test -f THIRD_PARTY_NOTICES.md
+          test -f requirements.lock
+          grep -F -- '--hash=sha256:' requirements.lock
+          test -f web/collect-third-party-licenses.mjs
+          test -f scripts/collect-python-third-party-licenses.py
+          test -f scripts/export-public-release.py
+          test -f scripts/migrate-data-uid.sh
+          test -f scripts/update-requirements-lock.sh
+          test -f tests/https_proxy_smoke.py
+          test -f tests/run-https-proxy-smoke.sh
+          test -f tests/ha_conflict_rejoin_smoke.py
+          test -f tests/run-ha-conflict-rejoin-smoke.sh
+          test -f .github/scripts/collect-alpine-copyleft-manifest.py
+          test -f .github/scripts/collect-alpine-copyleft-sources.sh
+          test -f .github/scripts/validate-alpine-copyleft-manifest.sh
+          test -f .github/scripts/test-alpine-copyleft-manifest.sh
+          bash -n .github/scripts/collect-alpine-copyleft-sources.sh \
+            scripts/migrate-data-uid.sh tests/test-data-uid-migration.sh
+          bash scripts/update-requirements-lock.sh --check
+          grep -Fx '.env' .dockerignore
+          grep -Fx 'local-data' .dockerignore
+          grep -Fx 'secrets' .dockerignore
+          grep -Fx '.codex-artifacts/' .gitignore
+          grep -Fx 'tests;C/' .gitignore
+          grep -Fx '.codex-artifacts/' .dockerignore
+          grep -Fx 'tests;C/' .dockerignore
+          if grep -R -E '__[A-Z0-9_]+__' unraid; then
+            echo "La plantilla contiene marcadores sin resolver" >&2
+            exit 1
+          fi
+          if grep -R -E '10\.|172\.(1[6-9]|2[0-9]|3[01])\.|192\.168\.' \
+              unraid .env.example compose.yaml; then
+            echo "Hay direcciones RFC1918 incrustadas en artefactos de instalación" >&2
+            exit 1
+          fi
+
+      - name: Validate Compose and Unraid XML
+        shell: bash
+        run: |
+          set -euo pipefail
+          RTFM_ENV_FILE=.env.example docker compose --env-file .env.example config --quiet
+          python -c "import xml.etree.ElementTree as E; E.parse('unraid/my-RTFM.xml')"
+          test "$(grep -c '<Config ' unraid/my-RTFM.xml)" = 2
+          if grep -F '/run/secrets' unraid/my-RTFM.xml; then
+            echo "La plantilla no debe montar secretos externos" >&2
+            exit 1
+          fi
+          python tests/validate_unraid_template.py
+
+      - name: Audit Python and web dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check pip-audit==2.10.1 bandit==1.9.4
+          pip-audit --requirement requirements.lock
+          bandit -r app -q
+          npm --prefix web audit --omit=dev --audit-level=high
+
+      - name: Build image and run embedded tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(tr -d ' \r\n' < VERSION)"
+          docker build --pull --tag rtfm:ci \
+            --build-arg "VERSION=$version" \
+            --build-arg "SOURCE_URL=https://github.com/Ezr43l/rtfm-s" .
+
+      - name: Check runtime identity and OCI metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(tr -d ' \r\n' < VERSION)"
+          test "$(docker image inspect rtfm:ci --format '{{index .Config.Labels "org.opencontainers.image.version"}}')" = "$version"
+          test "$(docker image inspect rtfm:ci --format '{{.Config.User}}')" = "10001:10001"
+          test "$(docker image inspect rtfm:ci --format '{{index .Config.Labels "org.opencontainers.image.licenses"}}')" = "Apache-2.0"
+          test "$(docker image inspect rtfm:ci --format '{{index .Config.Labels "io.ezr43l.image.third-party-notices"}}')" = "/app/THIRD_PARTY_NOTICES.md"
+          test "$(docker image inspect rtfm:ci --format '{{index .Config.Labels "io.ezr43l.image.npm-third-party-licenses"}}')" = "/app/NPM_THIRD_PARTY_LICENSES.txt"
+          test "$(docker image inspect rtfm:ci --format '{{index .Config.Labels "io.ezr43l.image.python-third-party-licenses"}}')" = "/app/PYTHON_THIRD_PARTY_LICENSES.txt"
+          docker run --rm --entrypoint sh rtfm:ci -c \
+            'test -s /app/THIRD_PARTY_NOTICES.md && test -s /app/NPM_THIRD_PARTY_LICENSES.txt && test -s /app/PYTHON_THIRD_PARTY_LICENSES.txt && test -s /app/licenses/git-COPYING && test -s /app/licenses/iproute2-COPYING && grep -F "react@19.1.1" /app/NPM_THIRD_PARTY_LICENSES.txt && grep -F "mermaid@11.17.0" /app/NPM_THIRD_PARTY_LICENSES.txt && grep -F "fastapi@0.141.1" /app/PYTHON_THIRD_PARTY_LICENSES.txt && grep -F "cryptography@50.0.1" /app/PYTHON_THIRD_PARTY_LICENSES.txt'
+          test "$(docker run --rm --entrypoint python rtfm:ci -c 'from app.version import VERSION; print(VERSION)')" = "$version"
+
+      - name: Audit source-required Alpine inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          work="$RUNNER_TEMP/rtfm-source-manifest"
+          mkdir -p "$work"
+          container_id="$(docker create rtfm:ci)"
+          cleanup() { docker rm "$container_id" >/dev/null 2>&1 || true; }
+          trap cleanup EXIT
+          docker cp "$container_id:/lib/apk/db/installed" "$work/installed"
+          docker run --rm --platform linux/amd64 --entrypoint python \
+            -v "$PWD/.github/scripts/collect-alpine-copyleft-manifest.py:/collector.py:ro" \
+            -v "$work/installed:/input/installed:ro" \
+            -v "$work:/output" \
+            python:3.12-alpine@sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31 \
+            /collector.py /output/manifest.tsv \
+            linux/amd64=/input/installed linux/arm64=/input/installed
+          bash .github/scripts/validate-alpine-copyleft-manifest.sh "$work/manifest.tsv"
+
+      - name: Run isolated API, permissions and legacy-data smoke suite
+        shell: bash
+        run: bash tests/run-smoke-suite.sh rtfm:ci
+
+      - name: Run first-install setup smoke
+        shell: bash
+        run: bash tests/run-setup-smoke.sh rtfm:ci
+
+      - name: Run isolated HTTPS and trusted-proxy smoke suite
+        shell: bash
+        run: bash tests/run-https-proxy-smoke.sh rtfm:ci
+
+      - name: Run isolated three-node conflict and stale rejoin suite
+        shell: bash
+        run: bash tests/run-ha-conflict-rejoin-smoke.sh rtfm:ci
+
+      - name: Reject high or critical image vulnerabilities
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+            aquasec/trivy:0.74.0@sha256:62b1e65e8869bc4b4c6aa4fa2b21595256c7c2f6018a9d9ad61caf87187c1969 \
+            image --scanners vuln --severity HIGH,CRITICAL \
+            --exit-code 1 --no-progress rtfm:ci
+
+      - name: Secret scan of the exportable tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          public_export="$RUNNER_TEMP/rtfm-public-export"
+          python scripts/export-public-release.py "$public_export"
+          (cd "$public_export" && sha256sum --check PUBLIC_EXPORT_SHA256SUMS)
+          test ! -e "$public_export/.git"
+          test ! -e "$public_export/.codex-artifacts"
+          test ! -e "$public_export/tests;C"
+          docker run --rm -v "$public_export:/repo:ro" \
+            zricethezav/gitleaks:v8.30.1@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f \
+            detect --source=/repo --no-git --redact --exit-code=1

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!-- Un único contenedor. La plantilla sólo define la conexión con Docker; el
+     asistente web guarda identidad, acceso, Keepalived, réplica y políticas en
+     el volumen persistente. -->
+<Container version="2">
+  <Name>RTFM</Name>
+  <Repository>ghcr.io/ezr43l/rtfm-s:0.4.9</Repository>
+  <Registry>https://github.com/Ezr43l/rtfm-s/pkgs/container/rtfm-s</Registry>
+  <Network>host</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/Ezr43l/rtfm-s/issues</Support>
+  <Project>https://github.com/Ezr43l/rtfm-s</Project>
+  <Overview>RTFM organiza documentación técnica, procedimientos y conocimiento operativo. Tras el primer arranque, abre la WebUI para crear la cuenta propietaria y configurar el nodo, Keepalived, réplica y políticas. Todos esos datos permanecen en el volumen y no en la plantilla.</Overview>
+  <Category>Tools:Productivity:</Category>
+  <WebUI>http://[IP]:[PORT:7400]/</WebUI>
+  <TemplateURL>https://raw.githubusercontent.com/Ezr43l/rtfm-s/main/unraid/my-RTFM.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/Ezr43l/rtfm-s/main/logo/icono.png</Icon>
+  <ExtraParams>--restart=unless-stopped --init --read-only --tmpfs /tmp:rw,nosuid,noexec,size=128m,mode=1777 --cap-drop=ALL --security-opt=no-new-privileges --pids-limit=256</ExtraParams>
+  <Config Name="Puerto de la aplicación" Target="PORT" Default="7400" Description="Puerto HTTP de la WebUI y la API. La red host lo publica directamente en el servidor." Type="Variable" Display="always" Required="true" Mask="false">7400</Config>
+  <Config Name="Datos de RTFM" Target="/data" Default="/mnt/user/appdata/rtfm/data" Mode="rw" Description="Documentos, cuentas, configuración, secretos generados, historial Git y estado. Conserva esta ruta al actualizar." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/rtfm/data</Config>
+</Container>

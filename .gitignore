@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+data/
+local-data/
+.env
+dist/
+node_modules/
+.docker-config-check/
+.codex-artifacts/
+tests;C/

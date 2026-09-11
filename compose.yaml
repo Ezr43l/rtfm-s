@@ -1,0 +1,35 @@
+name: rtfm
+
+services:
+  rtfm:
+    image: ${RTFM_IMAGE:-rtfm:0.4.9}
+    build:
+      context: .
+      args:
+        VERSION: ${RTFM_BUILD_VERSION:-0.4.9}
+        SOURCE_URL: ${RTFM_SOURCE_URL:-https://github.com/Ezr43l/rtfm-s}
+        LICENSE: ${RTFM_LICENSE_SPDX:-Apache-2.0}
+    container_name: ${RTFM_CONTAINER_NAME:-rtfm}
+    restart: unless-stopped
+    init: true
+    network_mode: host
+    env_file:
+      - path: ${RTFM_ENV_FILE:-.env}
+        required: false
+    environment:
+      DATA_DIR: /data
+      PORT: ${PORT:-7400}
+    volumes:
+      - rtfm-data:/data
+    read_only: true
+    tmpfs:
+      - /tmp:size=128m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 256
+    stop_grace_period: 20s
+
+volumes:
+  rtfm-data:

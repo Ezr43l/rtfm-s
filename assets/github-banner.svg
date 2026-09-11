@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 320" role="img" aria-labelledby="title desc">
+  <title id="title">RTFM</title><desc id="desc">Documentación técnica autohospedada y preparada para alta disponibilidad</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071015"/><stop offset="1" stop-color="#132630"/></linearGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0v32" fill="none" stroke="#12cddd" stroke-opacity=".07"/></pattern>
+  </defs>
+  <rect width="1280" height="320" rx="28" fill="url(#bg)"/><rect width="1280" height="320" rx="28" fill="url(#grid)"/>
+  <g transform="translate(70 48)"><rect width="224" height="224" rx="52" fill="#0a1921" stroke="#12cddd" stroke-width="4"/><path d="M42 58c27-9 53-5 70 10v112c-17-15-43-19-70-10zm140 0c-27-9-53-5-70 10v112c17-15 43-19 70-10z" fill="none" stroke="#55df9a" stroke-width="9" stroke-linejoin="round"/><path d="M112 68v112" stroke="#12cddd" stroke-width="7"/><path d="m66 105 20-17m-20 17 20 17m72-17-20-17m20 17-20 17" fill="none" stroke="#eafaff" stroke-width="8" stroke-linecap="round"/></g>
+  <text x="350" y="135" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="72" font-weight="800" letter-spacing="5" fill="#eafaff">RTFM</text>
+  <text x="354" y="188" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="23" font-weight="700" letter-spacing="2" fill="#12cddd">DOCUMENTACIÓN · PERMISOS · GIT · RÉPLICA</text>
+  <text x="354" y="234" font-family="Inter,Segoe UI,sans-serif" font-size="23" fill="#93afbd">Conocimiento operativo, versionado y disponible cuando importa.</text>
+  <path d="M354 259h690" stroke="#55df9a" stroke-width="4" stroke-linecap="round"/><circle cx="1067" cy="259" r="8" fill="#55df9a"/>
+</svg>
