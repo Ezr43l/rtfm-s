@@ -36,7 +36,7 @@ La plantilla `unraid/my-RTFM.xml` sólo solicita:
 2. el directorio persistente, normalmente `/mnt/user/appdata/rtfm/data`.
 
 RTFM usa red `host` porque el modo automático debe observar la IP flotante real
-del servidor. La plantilla descarga `ghcr.io/ezr43l/rtfm-s:0.4.9`; no construye
+del servidor. La plantilla descarga `ghcr.io/ezr43l/rtfm-s:dev`; no construye
 la imagen ni depende del Registry local.
 
 Tras crear el contenedor abre la WebUI. El asistente inicial pide los datos de

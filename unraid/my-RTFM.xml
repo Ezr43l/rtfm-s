@@ -4,7 +4,7 @@
      el volumen persistente. -->
 <Container version="2">
   <Name>RTFM</Name>
-  <Repository>ghcr.io/ezr43l/rtfm-s:0.4.9</Repository>
+  <Repository>ghcr.io/ezr43l/rtfm-s:dev</Repository>
   <Registry>https://github.com/Ezr43l/rtfm-s/pkgs/container/rtfm-s</Registry>
   <Network>host</Network>
   <MyIP/>
