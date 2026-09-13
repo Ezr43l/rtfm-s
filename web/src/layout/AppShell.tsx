@@ -88,6 +88,7 @@ export function AppShell({ status }: { status: PublicSystemStatus }) {
         </div>
       </header>
       <main className="page" key={location.pathname}><Outlet /></main>
+      <footer className="app-footer">El soporte se ofrece en la <a href="https://discord.gg/8MAT6ZGJTW" target="_blank" rel="noreferrer">comunidad de Discord de Unraides</a>.</footer>
     </div>
   </div>
 }
@@ -107,6 +108,7 @@ export function PassiveNode({ status }: { status: PublicSystemStatus }) {
       <div className="passive-status"><span className="status-dot" /><div><strong>{unknown ? 'Estado sin verificar' : 'Servicio disponible'}</strong><span>{status.floating_ip_connector.error || status.role_reason}</span></div></div>
       {status.active_url && <a className="button primary wide" href={status.active_url}>Abrir el nodo activo</a>}
       <div className="passive-meta"><span>Versión {status.version}</span><span>Sincronización cada {Math.round(status.sync_interval_seconds / 60)} min</span></div>
+      <a className="passive-support" href="https://discord.gg/8MAT6ZGJTW" target="_blank" rel="noreferrer">Soporte en Discord · Unraides</a>
     </section>
   </main>
 }

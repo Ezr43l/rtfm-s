@@ -1,7 +1,7 @@
 {
   "name": "rtfm-web",
   "private": true,
-  "version": "0.4.9",
+  "version": "0.4.10",
   "type": "module",
   "scripts": {
     "build": "tsc -b && vite build",

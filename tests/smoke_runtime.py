@@ -36,7 +36,7 @@ def call(method: str, path: str, payload: dict | None = None, expected: int = 20
 
 health = call("GET", "/api/health")
 assert health["status"] == "ok"
-assert health["version"] == "0.4.9"
+assert health["version"] == "0.4.10"
 
 session = call(
     "POST",

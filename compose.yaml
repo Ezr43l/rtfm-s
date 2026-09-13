@@ -2,11 +2,11 @@ name: rtfm
 
 services:
   rtfm:
-    image: ${RTFM_IMAGE:-rtfm:0.4.9}
+    image: ${RTFM_IMAGE:-rtfm:0.4.10}
     build:
       context: .
       args:
-        VERSION: ${RTFM_BUILD_VERSION:-0.4.9}
+        VERSION: ${RTFM_BUILD_VERSION:-0.4.10}
         SOURCE_URL: ${RTFM_SOURCE_URL:-https://github.com/Ezr43l/rtfm-s}
         LICENSE: ${RTFM_LICENSE_SPDX:-Apache-2.0}
     container_name: ${RTFM_CONTAINER_NAME:-rtfm}

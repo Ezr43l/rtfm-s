@@ -53,6 +53,7 @@ export function LoginPage() {
         {requiresSecondFactor && <label className="field two-factor-field"><span><Smartphone size={16} /> Código 2FA</span><input value={otp} onChange={event => setOtp(event.target.value)} required autoFocus inputMode="numeric" autoComplete="one-time-code" placeholder="6 dígitos o código de recuperación" /></label>}
         {error && <div className="form-error">{error}</div>}
         <button className="button primary wide" disabled={submitting}>{submitting ? 'Comprobando…' : <>{requiresSecondFactor ? 'Verificar y acceder' : 'Acceder'} <ArrowRight size={18} /></>}</button>
+        <a className="login-support" href="https://discord.gg/8MAT6ZGJTW" target="_blank" rel="noreferrer">Soporte en Discord · Unraides</a>
       </form>
     </section>
   </main>

@@ -1,4 +1,4 @@
-# Instalación de RTFM 0.4.9 en Unraid
+# Instalación de RTFM 0.4.10 en Unraid
 
 ## Antes de empezar
 
@@ -98,7 +98,7 @@ en `/data/.rtfm/secrets` con modo `0600` y no aparecen en `docker inspect`.
 
 Comprueba también:
 
-- `/api/health` y la versión `0.4.9`;
+- `/api/health` y la versión `0.4.10`;
 - login y 2FA;
 - creación, edición, archivado, eliminación y restauración de un documento;
 - exportación a PDF desde la vista de lectura, incluyendo imágenes y diagramas;

@@ -1,8 +1,8 @@
-# Checklist de publicación de RTFM 0.4.9
+# Checklist de publicación de RTFM 0.4.10
 
 Un repositorio privado no exportable sigue siendo el origen canónico. Sólo una versión
 correctiva aprobada se exporta con historial limpio a `Ezr43l/rtfm-s`.
-La publicación de `0.4.9` no cambia el carácter experimental de toda la serie `0.x`.
+La publicación de `0.4.10` no cambia el carácter experimental de toda la serie `0.x`.
 
 ## Bloqueos antes de la primera release
 

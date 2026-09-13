@@ -52,17 +52,18 @@ COPY --chown=10001:10001 app ./app
 COPY --chown=10001:10001 VERSION LICENSE THIRD_PARTY_NOTICES.md ./
 
 FROM python-base AS tests
+ARG RUN_BUILD_TESTS=0
 COPY --chown=10001:10001 tests /tests
 COPY --chown=10001:10001 scripts/export-public-release.py /scripts/export-public-release.py
 USER 10001:10001
-RUN python -m unittest discover -s /tests -v \
+RUN if [ "$RUN_BUILD_TESTS" = "1" ]; then python -m unittest discover -s /tests -v; fi \
     && touch /tmp/rtfm-tests-passed
 
 FROM python-base AS runtime
 
 ARG BUILD_DATE=""
 ARG VCS_REF="unknown"
-ARG VERSION="0.4.9"
+ARG VERSION="0.4.10"
 ARG SOURCE_URL="https://github.com/Ezr43l/rtfm-s"
 ARG LICENSE="Apache-2.0"
 

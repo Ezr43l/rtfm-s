@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-IMAGE="${1:-rtfm:0.4.9}"
+IMAGE="${1:-rtfm:0.4.10}"
 RUN_ID="$(date +%s)-$$-$RANDOM"
 RESOURCE_LABEL_NAME="io.ezr43l.rtfm-smoke"
 LABEL="$RESOURCE_LABEL_NAME=$RUN_ID"
@@ -85,7 +85,7 @@ for script in \
 done
 
 # Reproduce la forma persistida por 0.4.0 (biblioteca sin miembro `access`) y
-# comprueba que 0.4.9 la abre sin reescribirla destructivamente. La validación
+# comprueba que 0.4.10 la abre sin reescribirla destructivamente. La validación
 # local de release conserva, además, la prueba binaria real 0.4.0 -> versión actual.
 echo "· smoke_upgrade_040_to_041.py"
 upgrade_name="rtfm-smoke-${RUN_ID}-upgrade"

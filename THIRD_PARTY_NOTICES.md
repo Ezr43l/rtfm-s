@@ -23,7 +23,7 @@ describe RTFM y no sustituye las licencias de esos componentes.
 
 | Componente | Versión fijada | Licencia declarada |
 | --- | --- | --- |
-| RTFM (código y documentación propios) | `0.4.9` | `Apache-2.0` |
+| RTFM (código y documentación propios) | `0.4.10` | `Apache-2.0` |
 | Git (paquete Alpine) | `2.54.0-r0` | `GPL-2.0-only` |
 | iproute2 (paquetes Alpine) | `7.0.0-r0` | `GPL-2.0-or-later` |
 | FastAPI y dependencias Python | versiones exactas en `requirements.txt`, artefactos fijados por SHA-256 en `requirements.lock` | MIT, BSD, Apache-2.0, MIT-0 y PSF-2.0 según metadatos de cada wheel |

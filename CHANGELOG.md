@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.10] - 2026-09-13
+
+### Añadido
+
+- Añadido en el acceso, el pie del portal y la pantalla de nodo pasivo el enlace de
+  soporte a la comunidad de Discord de Unraides.
+- La plantilla pública continúa siguiendo el canal de desarrollo `dev`.
+
 ## [0.4.9] - 2026-09-11
 
 ### Añadido
