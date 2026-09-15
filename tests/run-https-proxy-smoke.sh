@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-IMAGE="${1:-rtfm:0.4.10}"
+IMAGE="${1:-rtfm:0.4.11}"
 RUN_ID="$(date +%s)-$$-$RANDOM"
 RESOURCE_LABEL_NAME="io.ezr43l.rtfm-https-smoke"
 LABEL="$RESOURCE_LABEL_NAME=$RUN_ID"

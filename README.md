@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <img alt="Versión 0.4.10" src="https://img.shields.io/badge/versión-0.4.10-12cddd">
+  <img alt="Versión 0.4.11" src="https://img.shields.io/badge/versión-0.4.11-12cddd">
   <img alt="Un contenedor" src="https://img.shields.io/badge/despliegue-1%20contenedor-55df9a">
   <img alt="Linux AMD64 y ARM64" src="https://img.shields.io/badge/Linux-amd64%20%7C%20arm64-6da7d9">
   <a href="LICENSE"><img alt="Licencia Apache 2.0" src="https://img.shields.io/badge/licencia-Apache--2.0-7d91a3"></a>
@@ -16,7 +16,7 @@ documentación técnica, procedimientos, diagramas y conocimiento operativo. Cad
 instancia incluye WebUI, API, almacenamiento documental, auditoría, historial Git
 y réplica en un único contenedor Linux.
 
-La versión de desarrollo actual de este repositorio es `0.4.10`. Su árbol se exportó
+La versión de desarrollo actual de este repositorio es `0.4.11`. Su árbol se exportó
 sin el historial ni los datos del entorno de desarrollo.
 
 La serie `0.x` sigue siendo experimental. No expongas RTFM fuera de una red de

@@ -63,7 +63,7 @@ FROM python-base AS runtime
 
 ARG BUILD_DATE=""
 ARG VCS_REF="unknown"
-ARG VERSION="0.4.10"
+ARG VERSION="0.4.11"
 ARG SOURCE_URL="https://github.com/Ezr43l/rtfm-s"
 ARG LICENSE="Apache-2.0"
 

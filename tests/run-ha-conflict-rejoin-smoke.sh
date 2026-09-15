@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-IMAGE="${1:-rtfm:0.4.10}"
+IMAGE="${1:-rtfm:0.4.11}"
 RUN_ID="$(date +%s)-$$-$RANDOM"
 RESOURCE_LABEL_NAME="io.ezr43l.rtfm-ha-conflict-smoke"
 LABEL="$RESOURCE_LABEL_NAME=$RUN_ID"
@@ -51,7 +51,7 @@ wait_node() {
   local node="$1" role="$2" container="rtfm-ha-$RUN_ID-$1"
   for _ in $(seq 1 90); do
     if MSYS_NO_PATHCONV=1 docker exec "$container" python -c \
-      "import json,urllib.request; d=json.load(urllib.request.urlopen('http://127.0.0.1:7400/api/health', timeout=2)); assert d['status']=='ok' and d['role']=='$role' and d['version']=='0.4.10'" \
+      "import json,urllib.request; d=json.load(urllib.request.urlopen('http://127.0.0.1:7400/api/health', timeout=2)); assert d['status']=='ok' and d['role']=='$role' and d['version']=='0.4.11'" \
       >/dev/null 2>&1; then
       return 0
     fi

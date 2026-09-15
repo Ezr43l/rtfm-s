@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.4.11] - 2026-09-15
+
+### Seguridad
+
+- Vite se actualiza de `7.1.3` a `7.3.6` para corregir los ocho avisos de seguridad de la herramienta de desarrollo web.
+- La dependencia esbuild se actualiza a una versión corregida, compatible con Vite, para evitar su aviso de lectura de archivos en Windows.
+- Se regenera el bloqueo de dependencias y se conserva la distribución como un único contenedor Linux, sin servidor Vite en ejecución.
+- RTFM continúa en el canal `dev`; no se cambian las cuentas, los documentos ni la configuración persistente.
+
 ## [0.4.10] - 2026-09-13
 
 ### Añadido
