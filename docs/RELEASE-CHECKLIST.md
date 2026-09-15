@@ -1,57 +1,51 @@
-# Checklist de publicación de RTFM 0.4.10
+# Publicación de RTFM
 
-Un repositorio privado no exportable sigue siendo el origen canónico. Sólo una versión
-correctiva aprobada se exporta con historial limpio a `Ezr43l/rtfm-s`.
-La publicación de `0.4.10` no cambia el carácter experimental de toda la serie `0.x`.
+Procedimiento vigente desde el 15 de septiembre de 2026. Sustituye el antiguo
+proceso de publicación automática y sus requisitos de tareas en GitHub.
 
-## Bloqueos antes de la primera release
+## Versión actual
 
-- [ ] Ejecutar externamente `PUT` + `GET /repos/{owner}/{repo}/immutable-releases`
-  con permisos de administración y, solo tras confirmar `enabled=true`, fijar
-  `IMMUTABLE_RELEASES_ENABLED=true`. El workflow no almacena ningún PAT y
-  comprueba de nuevo `immutable=true` tras publicar.
+- Versión: `0.4.10`.
+- Desarrollo privado: `Ezr43l/rtfm`.
+- Distribución pública: `Ezr43l/rtfm-s`.
+- Imagen por versión: `ghcr.io/ezr43l/rtfm-s:0.4.10`.
+- Canal de la plantilla: `ghcr.io/ezr43l/rtfm-s:dev`.
 
-- [x] Adoptar Apache-2.0 y añadir el texto canónico en `LICENSE`.
-- [ ] Configurar `LICENSE_SPDX=Apache-2.0` en el repositorio público; el workflow
-  bloquea la publicación mientras la variable falte o sea distinta.
-- [ ] Crear el repositorio público aprobado `Ezr43l/rtfm-s`.
-- [x] Completar permisos por biblioteca, interfaz administrativa, migración compatible y
-  pruebas de aislamiento para personas, clientes API y credencial heredada.
-- [x] Reducir la instalación pública a puerto y volumen. El asistente interno
-  genera los secretos con modo `0600`, guarda el token de Keepalived dentro de
-  `/data` y no expone valores en `docker inspect`.
-- [x] Verificar backup frío, restauración y rollback real en una instalación de tres nodos.
-- [x] Validar HTTPS, CA, proxy de confianza, HSTS, cookie segura y limitación por cliente en
-  Docker local AMD64/ARM64 y en un host físico AMD64 sin exponer puertos del laboratorio.
-- [x] Ejecutar el núcleo del laboratorio HA multinodo: VIP, réplica, escritura, rechazo en
-  pasivo, tombstones, vault, failover, rejoin, preemption, actualización y rollback.
-- [x] Completar un laboratorio HA de tres nodos con conflicto concurrente deliberado, nodo
-  mantenido atrasado, reconciliación determinista y limpieza total de recursos.
-- [x] Exportador público determinista basado sólo en el snapshot inmutable de `HEAD`, con
-  política de rechazo, manifiesto SHA-256 regenerable y pruebas que excluyen historial,
-  evidencias y ficheros ignorados.
-- [ ] Confirmar que GHCR permite pull anónimo y que plantilla, icono y enlaces son públicos.
-- [ ] Escanear árbol exportado e historial nuevo para secretos e identificadores privados.
-- [ ] Instalar únicamente con la guía y artefactos públicos desde una máquina limpia.
+## Pasos para una modificación
 
-## Contrato de artefactos
+1. Aplicar únicamente el cambio solicitado en el proyecto privado.
+2. Para cambios de código, asignar la versión acordada en `VERSION` y actualizar
+   el historial y las referencias de versión afectadas.
+3. Comprobar la parte modificada y sus dependencias directas: máximo 20 pruebas
+   concretas, realizadas en nuestros equipos, no en GitHub.
+4. Si cambia el código de la imagen, construir aquí o en nuestros servidores
+   las variantes Linux AMD64 y ARM64 necesarias. No recompilar por cambios sólo
+   documentales, de soporte o del nombre de un repositorio.
+5. Publicar el código terminado en los repositorios privado y público, sin
+   copiar al público el historial privado, credenciales ni datos de instalación.
+6. Subir a GHCR las imágenes ya construidas, conservar su etiqueta de versión
+   y actualizar el canal aprobado. RTFM usa `dev`; las demás usan `stable`.
+7. Crear la ficha de versión en GitHub desde el cambio aprobado. Una ficha o
+   una subida no debe iniciar ninguna tarea automática.
+8. Sincronizar los tres Gitea y comprobar que cada espejo apunta exactamente
+   al mismo cambio que el repositorio privado de GitHub.
+9. Si hay una imagen nueva, probarla primero en Khonshu y, tras aprobación,
+   desplegar esa misma imagen en los tres servidores y comprobar lo afectado.
 
-1. `VERSION`, changelog, paquete web, Compose, plantilla e imagen contienen la misma versión.
-2. El tag anotado y protegido es `v<version>`, nace en el repositorio público `-s` y sólo se
-   promociona tras una CI correcta sobre el mismo commit.
-3. El workflow construye y escanea `linux/amd64` y `linux/arm64`, publica dos SBOM, avisos y
-   textos de licencia, fuentes Alpine correspondientes, sumas SHA-256 y procedencia firmada
-   en `ghcr.io/ezr43l/rtfm-s:<version>`.
-4. La release registra el digest multi-arquitectura; la guía no depende de `latest`.
-5. Se verifican backup, restauración, actualización y rollback antes de declarar la versión
-   apta para producción.
-6. La plantilla conserva exactamente dos campos y no monta secretos externos;
-   toda la configuración funcional de una instalación nueva se realiza en la WebUI.
+GitHub es un destino pasivo: no construye, prueba, analiza ni prepara versiones.
+Sus tareas automáticas permanecen desactivadas. Las imágenes anteriores y sus
+etiquetas no se eliminan manualmente; Local Registry regula su retención.
 
-Una plantilla Unraid no construye la imagen: descarga el valor de `<Repository>`. Compose sí
-puede construir desde un source release porque incluye `build:` y el Dockerfile. Para una
-entrega sencilla deben existir tanto el source público como la imagen GHCR verificable.
+## Instalación y soporte
 
-El árbol inicial del repositorio público se crea con
-`scripts/export-public-release.py`; queda prohibido copiar `.git` o construir la entrega
-desde una lista manual de archivos.
+La plantilla conserva dos campos: puerto y datos persistentes. La imagen usa
+el usuario `10001:10001`; la carpeta montada debe permitirle escribir. La serie
+`0.x` se publica como desarrollo y no se presenta como estable.
+
+Una aplicación se instala como un único contenedor. Las plantillas públicas
+no contienen datos de nuestra instalación. Una plantilla descarga una imagen;
+no la construye. El canal se actualiza sin cambiar la URL de la plantilla.
+
+Soporte exclusivamente en [Unraides en Discord](https://discord.gg/8MAT6ZGJTW).
+El código propio usa Apache-2.0; los componentes de terceros conservan sus
+licencias y los avisos incluidos en la distribución.

@@ -10,7 +10,7 @@
   <MyIP/>
   <Shell>sh</Shell>
   <Privileged>false</Privileged>
-  <Support>https://github.com/Ezr43l/rtfm-s/issues</Support>
+  <Support>https://discord.gg/8MAT6ZGJTW</Support>
   <Project>https://github.com/Ezr43l/rtfm-s</Project>
   <Overview>RTFM organiza documentación técnica, procedimientos y conocimiento operativo. Tras el primer arranque, abre la WebUI para crear la cuenta propietaria y configurar el nodo, Keepalived, réplica y políticas. Todos esos datos permanecen en el volumen y no en la plantilla.</Overview>
   <Category>Tools:Productivity:</Category>

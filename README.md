@@ -3,7 +3,6 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Ezr43l/rtfm-s/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Ezr43l/rtfm-s/actions/workflows/ci.yml/badge.svg"></a>
   <img alt="Versión 0.4.10" src="https://img.shields.io/badge/versión-0.4.10-12cddd">
   <img alt="Un contenedor" src="https://img.shields.io/badge/despliegue-1%20contenedor-55df9a">
   <img alt="Linux AMD64 y ARM64" src="https://img.shields.io/badge/Linux-amd64%20%7C%20arm64-6da7d9">
@@ -17,7 +16,7 @@ documentación técnica, procedimientos, diagramas y conocimiento operativo. Cad
 instancia incluye WebUI, API, almacenamiento documental, auditoría, historial Git
 y réplica en un único contenedor Linux.
 
-La única versión publicada en este repositorio es `0.4.10`. Su árbol se exportó
+La versión de desarrollo actual de este repositorio es `0.4.10`. Su árbol se exportó
 sin el historial ni los datos del entorno de desarrollo.
 
 La serie `0.x` sigue siendo experimental. No expongas RTFM fuera de una red de
@@ -62,8 +61,9 @@ cp .env.example .env
 docker compose up --build -d
 ```
 
-Abre `http://servidor:7400` y completa el mismo asistente. Compose construye
-desde el código y por eso sirve también antes de que exista una imagen pública.
+Abre `http://servidor:7400` y completa el mismo asistente. Este Compose construye
+desde el código para desarrollo. Para instalar una imagen ya publicada, utiliza
+la plantilla Unraid o Zero Launcher; ambos descargan el canal `dev` desde GHCR.
 
 ## Modos de funcionamiento
 
@@ -174,6 +174,15 @@ PUBLISH=true IMAGE_REPOSITORY=ghcr.io/ezr43l/rtfm-s ./build-image.sh
 
 `linux/amd64` corresponde a los servidores Unraid/x86-64 habituales y
 `linux/arm64` a hosts ARM; no son builds de Windows.
+
+## Soporte
+
+El soporte se presta exclusivamente en la comunidad de Discord de Unraides:
+
+**[Entrar en Unraides](https://discord.gg/8MAT6ZGJTW)**
+
+No se atienden solicitudes de soporte en GitHub. Al pedir ayuda, indica la
+versión de la aplicación y el error, sin compartir contraseñas ni tokens.
 
 ## Licencia
 
