@@ -1,19 +1,21 @@
 # syntax=docker/dockerfile:1.7
 
-FROM --platform=$BUILDPLATFORM node:22-alpine@sha256:c610fcdfb1d5b4740dd70c284ed3cb16bb857e0f7166196e36a5501df7a3aa32 AS frontend
+FROM --platform=$BUILDPLATFORM node:22.23.4-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914 AS frontend
 
 WORKDIR /build/web
 COPY web/package.json web/package-lock.json web/tsconfig.json web/tsconfig.app.json web/tsconfig.node.json web/vite.config.ts web/index.html ./
 COPY web/collect-third-party-licenses.mjs ./
 COPY web/src ./src
 COPY logo/icono.svg logo/icono.png ./public/
-RUN npm ci --no-audit --no-fund \
+RUN npm install --global npm@12.2.1 --no-audit --no-fund \
+    && test "$(npm --version)" = "12.2.1" \
+    && npm ci --no-audit --no-fund \
     && npm run typecheck \
     && npm run build \
     && node collect-third-party-licenses.mjs node_modules /build/NPM_THIRD_PARTY_LICENSES.txt \
     && test -s /build/NPM_THIRD_PARTY_LICENSES.txt
 
-FROM python:3.12-alpine@sha256:d09d15e60962ca365d1cd544a48773bac9d33f2fb1b00f2aa0deec78ade7dc31 AS python-base
+FROM python:3.12-alpine@sha256:b658b05ce9c4eb97ec6fc19424818a1f31993659c2b505a532f470e83807815d AS python-base
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -29,10 +31,12 @@ RUN mkdir -p /app/licenses \
     && chmod 0755 /app/licenses \
     && apk upgrade --no-cache \
     && apk add --no-cache \
-        ca-certificates=20260611-r0 \
+        ca-certificates=20261020-r0 \
         git=2.54.0-r0 \
         iproute2=7.0.0-r0 \
-    && pip install --no-cache-dir --require-hashes --requirement requirements.lock \
+    && python -m pip install --no-cache-dir --upgrade pip==26.2.2 \
+    && python -m pip install --no-cache-dir --require-hashes --requirement requirements.lock \
+    && python -m pip uninstall --yes pip \
     && python collect-python-third-party-licenses.py /app/PYTHON_THIRD_PARTY_LICENSES.txt \
     && test -s /app/PYTHON_THIRD_PARTY_LICENSES.txt \
     && rm collect-python-third-party-licenses.py \
@@ -63,7 +67,7 @@ FROM python-base AS runtime
 
 ARG BUILD_DATE=""
 ARG VCS_REF="unknown"
-ARG VERSION="0.4.11"
+ARG VERSION="0.4.12"
 ARG SOURCE_URL="https://github.com/Ezr43l/rtfm-s"
 ARG LICENSE="Apache-2.0"
 

@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.4.12] - 2026-10-24
+
+### Seguridad
+
+- Actualizadas las bases a Python 3.12.15 y Node.js 22.23.4, junto con las revisiones
+  corregidas de Alpine.
+- Actualizados Vite, DOMPurify, KaTeX y `source-map-js` a versiones sin los avisos
+  detectados.
+- Actualizado el instalador de paquetes durante la construcción y retirado de la imagen
+  final. RTFM continúa en el canal `dev`.
+
 ## [0.4.11] - 2026-09-15
 
 ### Seguridad

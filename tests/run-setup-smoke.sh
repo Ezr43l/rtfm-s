@@ -2,7 +2,7 @@
 set -euo pipefail
 
 export MSYS_NO_PATHCONV=1
-IMAGE="${1:-rtfm:0.4.11}"
+IMAGE="${1:-rtfm:0.4.12}"
 RUN_ID="$(date +%s)-$$-$RANDOM"
 LABEL="io.ezr43l.rtfm-setup=$RUN_ID"
 CONTAINER="rtfm-setup-$RUN_ID"
