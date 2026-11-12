@@ -23,7 +23,7 @@ describe RTFM y no sustituye las licencias de esos componentes.
 
 | Componente | Versión fijada | Licencia declarada |
 | --- | --- | --- |
-| RTFM (código y documentación propios) | `0.4.12` | `Apache-2.0` |
+| RTFM (código y documentación propios) | `0.4.13` | `Apache-2.0` |
 | Git (paquete Alpine) | `2.54.0-r0` | `GPL-2.0-only` |
 | iproute2 (paquetes Alpine) | `7.0.0-r0` | `GPL-2.0-or-later` |
 | FastAPI y dependencias Python | versiones exactas en `requirements.txt`, artefactos fijados por SHA-256 en `requirements.lock` | MIT, BSD, Apache-2.0, MIT-0 y PSF-2.0 según metadatos de cada wheel |
@@ -42,3 +42,9 @@ Fuentes y recetas de empaquetado de los dos programas GPL usados directamente po
 Los enlaces facilitan la inspección, pero no reemplazan el artefacto de fuentes que debe
 acompañar a cada release pública. Los avisos, autorías y condiciones de cada componente
 siguen perteneciendo a sus respectivos titulares.
+
+## Correcciones de seguridad de las bibliotecas
+
+OpenSSL 3.5.9 incorpora los cinco parches oficiales publicados el 10 de noviembre de 2026. Los parches, sus huellas y la licencia Apache-2.0 se conservan en /usr/share/licenses/security-runtime dentro de la imagen. Expat 2.10.0 procede de Alpine y Python utiliza esa biblioteca del sistema.
+
+cryptography 50.0.2 se compila desde su fuente verificada y enlaza con el OpenSSL corregido del sistema; no incluye una segunda copia estática. Su licencia original y sus metadatos se conservan.

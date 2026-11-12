@@ -5,10 +5,10 @@ proceso de publicación automática y sus requisitos de tareas en GitHub.
 
 ## Versión actual
 
-- Versión: `0.4.12`.
+- Versión: `0.4.13`.
 - Desarrollo privado: `Ezr43l/rtfm`.
 - Distribución pública: `Ezr43l/rtfm-s`.
-- Imagen por versión: `ghcr.io/ezr43l/rtfm-s:0.4.12`.
+- Imagen por versión: `ghcr.io/ezr43l/rtfm-s:0.4.13`.
 - Canal de la plantilla: `ghcr.io/ezr43l/rtfm-s:dev`.
 
 ## Pasos para una modificación

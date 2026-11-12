@@ -1,6 +1,6 @@
 # Modelo de seguridad
 
-## Estado implementado en v0.4.12
+## Estado implementado en v0.4.13
 
 - el nodo activo es el único que admite mutaciones;
 - el primer acceso transforma la credencial inicial en una cuenta propietaria persistente;

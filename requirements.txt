@@ -1,10 +1,10 @@
-# Dependencias fijadas a las versiones verificadas para RTFM 0.4.12.
+# Dependencias fijadas a las versiones verificadas para RTFM 0.4.13.
 annotated-doc==0.0.5
 annotated-types==0.8.0
 anyio==4.14.2
 cffi==2.1.1
 click==8.5.0
-cryptography==50.0.1
+cryptography==50.0.2
 fastapi==0.141.1
 h11==0.16.0
 httptools==0.8.0
